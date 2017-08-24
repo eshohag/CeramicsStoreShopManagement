@@ -1,0 +1,176 @@
+﻿@using CeramicsStoreShopManagement.Models.ViewModel
+@model CeramicsStoreShopManagement.Models.ViewModel.ProductViewModel
+
+@{
+    ViewBag.Title = "Selling";
+    ProductViewModel aProduct = ViewBag.Product;
+    List<ProductViewModel> SellItems = ViewBag.SellItem;
+}
+
+@section CSSFileBodyNeeded
+{
+    <link href="~/Dropdownlist/docsupport/prism.css" rel="stylesheet" />
+    <link href="~/Dropdownlist/chosen.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <style type="text/css" media="all">
+        /* fix rtl for demo */
+        .chosen-rtl .chosen-drop {
+            left: -9000px;
+        }
+    </style>
+}
+<div>
+    <fieldset>
+        <legend>Selling Items</legend>
+        <div class="form-group">
+            @Html.Label("Sell product Items", htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+
+                @Html.DropDownListFor(a => a.ProductID, new SelectList(ViewBag.all, "Value", "Text"), "Choose a product for selling...", new { @class = "chosen-select", @style = "width:350px;", @tabindex = "3" })
+                @Html.ValidationMessageFor(model => model.ProductID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <br />
+
+        @if (aProduct != null)
+        {
+            <table id="myTable" class="table">
+                <thead>
+                <tr style="background-color: #524527; color:aliceblue" class="">
+                    <th>Product</th>
+                    <th>Brand</th>
+                    <th>Country</th>
+                    <th>Per Unit Price(Taka)</th>
+                    <th>Available Quantity</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody id="tableBody">
+                <tr>
+                    @using (Html.BeginForm("Selling", "Product", FormMethod.Post))
+                    {
+                        <input type="hidden" value="@aProduct.ProductID" name="ProductID" id="ProductID" />
+
+                        <td><input value="@aProduct.ProductName" name="ProductName" id="ProductName" style="width:210px;" readonly /></td>
+                        <td><input value="@aProduct.BrandName" name="BrandName" id="BrandName" style="width:210px;" readonly /></td>
+                        <td><input value="@aProduct.CountryName" name="CountryName" id="CountryName" style="width:210px;" readonly /></td>
+                        <td><input value="@aProduct.MinSellingPrice" name="MinSellingPrice" id="MinSellingPrice" style="width:100px;" /></td>
+                        <td><input value="@aProduct.Quentity" name="Quentity" id="Quentity" style="width:100px;" /></td>
+
+
+                        <td><input type="submit" value="Add to list" class="btn-danger" /></td>
+                    }
+                </tr>
+                </tbody>
+            </table>
+        }
+        <hr />
+
+        @if (SellItems != null)
+        {
+            <table id="" class="table table-responsive table-striped table-info table-hover table-bordered">
+                <thead>
+                <tr style="background-color: green; color:aliceblue" class="">
+                    <th>Product</th>
+                    <th>Brand</th>
+                    <th>Country</th>
+                    <th>Per Unit Price(Taka)</th>
+                    <th>Quantity</th>
+                    <th>Total Price(Taka)</th>
+
+                </tr>
+                </thead>
+                <tbody id="">
+                @using (Html.BeginForm("SelectedProduct", "Product", FormMethod.Get))
+                {
+                    foreach (var sell in SellItems)
+                    {
+                        <tr>
+                            <td>@sell.ProductName</td>
+                            <td>@sell.BrandName</td>
+                            <td>@sell.CountryName</td>
+                            <td>@sell.MinSellingPrice</td>
+                            <td>@sell.Quentity</td>
+                            <td>@sell.TotalCost</td>
+                        </tr>
+                    }
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align: center !important;" colspan="2">
+                            <input type="submit" value="Sell Product" class="btn-danger" style="text-align: center" />
+                        </td>
+                        <td style="color: red">
+                            Total = @ViewBag.Quentities  Quantities
+                        </td>
+                        <td style="color: red">
+                            Total = @ViewBag.TotalPrice Taka
+                        </td>
+                    </tr>
+                 }
+                </tbody>
+            </table>
+            using (Html.BeginForm("CancelSelectedProduct", "Product", FormMethod.Post))
+            {
+                <input type="submit" value="Clear Product List" class="btn-danger" style="text-align: center" />
+            }
+        }
+
+
+    </fieldset>
+</div>
+
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Dropdownlist/chosen.jquery.js"></script>
+    <script src="~/Dropdownlist/docsupport/prism.js"></script>
+    <script type="text/javascript">
+        var config = {
+            '.chosen-select': {},
+            '.chosen-select-deselect': { allow_single_deselect: true },
+            '.chosen-select-no-single': { disable_search_threshold: 10 },
+            '.chosen-select-no-results': { no_results_text: 'Oops, nothing found!' },
+            '.chosen-select-width': { width: "95%" }
+        }
+        for (var selector in config) {
+            $(selector).chosen(config[selector]);
+        }
+
+
+
+
+
+
+        $(document).ready(function () {
+
+            $("#ProductID").change(function () {
+                var productID = $("#ProductID").val();
+
+
+                var json = { productID: productID };
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetProductByID", "Product")',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function (data) {
+                        if (data.isRedirect) {
+                            window.location.href = data.redirectUrl;
+                        }                      
+                    }
+                });
+            });
+        });
+
+
+        $(document).ready(function() {
+            $("#btnSubmit").click(function(){
+                alert("button");
+            });
+        });
+
+    </script>
+}
+

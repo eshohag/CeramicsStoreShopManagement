@@ -1,0 +1,136 @@
+﻿@model CeramicsStoreShopManagement.Models.ViewModel.ProductViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal col-md-12">
+        <div class="col-md-6">
+            <h4>Add Product</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.ProductName, htmlAttributes: new { @class = "col-lg-3" })
+                <div class="col-lg-9">
+                    @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "" } })
+                    @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Color, htmlAttributes: new { @class = "col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.Color, new { htmlAttributes = new { @class = "" } })
+                    @Html.ValidationMessageFor(model => model.Color, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Size, htmlAttributes: new { @class = " col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.Size, new { htmlAttributes = new { @class = "" } })
+                    @Html.ValidationMessageFor(model => model.Size, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = " col-md-3" })
+                <div class="col-md-9">
+                    @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "",@rows = "3", @id = "textArea" } })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+               
+                
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.BrandID, "Brand Name", htmlAttributes: new { @class = "col-md-3" })
+                <div class="col-md-9">
+                    @Html.DropDownListFor(a => a.BrandID, new SelectList(ViewBag.Brands, "Value", "Text"), "...Select Brand Name...", new { @class = "" })
+
+                    @Html.ValidationMessageFor(model => model.BrandID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CountryID, "Manufacturing Country", htmlAttributes: new { @class = "col-md-3" })
+                <div class="col-md-9">
+                    @Html.DropDownListFor(a => a.CountryID, new SelectList(ViewBag.Country, "Value", "Text"), "Select Manufacturing Country", new { @class = "" })
+
+                    @Html.ValidationMessageFor(model => model.CountryID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <h4>Princing a Product</h4>
+            <hr />
+            <div class="form-group">
+                @Html.LabelFor(model => model.PurchaesPrice, htmlAttributes: new {@class = "col-md-3"})
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.PurchaesPrice, new {htmlAttributes = new {@class = ""}})
+                    @Html.ValidationMessageFor(model => model.PurchaesPrice, "", new {@class = "text-danger"})
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.MinSellingPrice, htmlAttributes: new {@class = "col-md-3"})
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.MinSellingPrice, new {htmlAttributes = new {@class = ""}})
+                    @Html.ValidationMessageFor(model => model.MinSellingPrice, "", new {@class = "text-danger"})
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.MaxSellingPrice, htmlAttributes: new {@class = " col-md-3"})
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.MaxSellingPrice, new {htmlAttributes = new {@class = ""}})
+                    @Html.ValidationMessageFor(model => model.MaxSellingPrice, "", new {@class = "text-danger"})
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Quentity, htmlAttributes: new {@class = "col-md-3"})
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.Quentity, new {htmlAttributes = new {@class = ""}})
+                    @Html.ValidationMessageFor(model => model.Quentity, "", new {@class = "text-danger"})
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Add Product" class=" btn-danger" />
+                </div>
+            </div>
+
+        </div>
+
+          
+
+    </div>
+}
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<div class="col-md-12" style="text-align: center;">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<div class="col-md-12">
+    
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
